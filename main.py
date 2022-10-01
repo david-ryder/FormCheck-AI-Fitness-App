@@ -3,8 +3,9 @@ from secrets import choice
 import cv2
 import mediapipe as mp
 import numpy as np
-mp_drawing = mp.solutions.drawing_utils
-mp_pose = mp.solutions.pose
+
+mp_drawing = mp.solutions.mediapipe.python.solutions.drawing_utils
+mp_pose = mp.solutions.mediapipe.python.solutions.pose
 
 def calculate_angle(a,b,c):
     a = np.array(a) # First
@@ -44,28 +45,34 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         # Extract landmarks
         try:
             landmarks = results.pose_landmarks.landmark
+
+            # Get x and y coordinates of each bodypart needed for exercises
+            l_shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].y]
+            r_shoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER].y]
+            l_elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].y]
+            r_elbow = [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW].y]
+            l_wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST].y]
+            r_wrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_WRIST].y]
+            l_hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP].y]
+            r_hip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_HIP].y]
+            l_knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE].y]
+            r_knee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_KNEE].y]
+            l_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].y]
+            r_ankle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE].y]
             
-            # Get coordinates
-            shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-            elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-            wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+            # # Visualize angle
+            # cv2.putText(image, str(angle), 
+            #                tuple(np.multiply(elbow, [640, 480]).astype(int)), 
+            #                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+            #                     )
             
-            # Calculate angle
-            angle = calculate_angle(shoulder, elbow, wrist)
-            
-            # Visualize angle
-            cv2.putText(image, str(angle), 
-                           tuple(np.multiply(elbow, [640, 480]).astype(int)), 
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                )
-            
-            # Curl counter logic
-            if angle > 160:
-                stage = "down"
-            if angle < 30 and stage =='down':
-                stage="up"
-                counter +=1
-                print(counter)
+            # # Curl counter logic
+            # if angle > 160:
+            #     stage = "down"
+            # if angle < 30 and stage =='down':
+            #     stage="up"
+            #     counter +=1
+            #     print(counter)
                        
         except:
             pass
