@@ -9,6 +9,7 @@ from Functions.exercises import *
 
 mp_drawing = mp.solutions.mediapipe.python.solutions.drawing_utils
 mp_pose = mp.solutions.mediapipe.python.solutions.pose
+mp_drawing_styles = mp.solutions.mediapipe.python.solutions.drawing_styles
 
 def calculate_angle(a,b,c):
     a = np.array(a) # First
@@ -80,30 +81,13 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         except:
             pass
         
-        # Render curl counter
-        # Setup status box
-        # cv2.rectangle(image, (0,0), (225,73), (245,117,16), -1)
-        
-        # # Rep data
-        # cv2.putText(image, 'REPS', (15,12), 
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
-        # cv2.putText(image, str(counter), 
-        #             (10,60), 
-        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
-        
-        # # Stage data
-        # cv2.putText(image, 'STAGE', (65,12), 
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
-        # cv2.putText(image, stage, 
-        #             (60,60), 
-        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
-        
-        
         # Render detections
-        mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                mp_drawing.DrawingSpec(color=(255, 150, 0), thickness=0, circle_radius=0),
-                                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=3, circle_radius=0)
-                                )               
+        mp_drawing.draw_landmarks (
+            image,
+            results.pose_landmarks,
+            mp_pose.POSE_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
+
         
         cv2.imshow('Mediapipe Feed', image)
 
