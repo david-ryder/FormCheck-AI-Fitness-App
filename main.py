@@ -1,8 +1,11 @@
+from colorsys import rgb_to_hls
 from itertools import count
 from secrets import choice
+from turtle import color
 import cv2
 import mediapipe as mp
 import numpy as np
+from Functions.exercises import *
 
 mp_drawing = mp.solutions.mediapipe.python.solutions.drawing_utils
 mp_pose = mp.solutions.mediapipe.python.solutions.pose
@@ -26,7 +29,7 @@ cap = cv2.VideoCapture(0)
 counter = 0 
 stage = None
 
-## Setup mediapipe instance
+# Setup mediapipe instance
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
         ret, frame = cap.read()
@@ -79,28 +82,28 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         # Render curl counter
         # Setup status box
-        cv2.rectangle(image, (0,0), (225,73), (245,117,16), -1)
+        # cv2.rectangle(image, (0,0), (225,73), (245,117,16), -1)
         
-        # Rep data
-        cv2.putText(image, 'REPS', (15,12), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
-        cv2.putText(image, str(counter), 
-                    (10,60), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
+        # # Rep data
+        # cv2.putText(image, 'REPS', (15,12), 
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
+        # cv2.putText(image, str(counter), 
+        #             (10,60), 
+        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
         
-        # Stage data
-        cv2.putText(image, 'STAGE', (65,12), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
-        cv2.putText(image, stage, 
-                    (60,60), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
+        # # Stage data
+        # cv2.putText(image, 'STAGE', (65,12), 
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv2.LINE_AA)
+        # cv2.putText(image, stage, 
+        #             (60,60), 
+        #             cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255), 2, cv2.LINE_AA)
         
         
         # Render detections
         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2), 
-                                mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2) 
-                                 )               
+                                mp_drawing.DrawingSpec(color=(255, 150, 0), thickness=0, circle_radius=0),
+                                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=3, circle_radius=0)
+                                )               
         
         cv2.imshow('Mediapipe Feed', image)
 

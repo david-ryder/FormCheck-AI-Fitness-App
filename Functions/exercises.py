@@ -7,3 +7,6 @@
 # Pullups
 
 # Squats
+
+def test():
+    print("yes daddy")
