@@ -1,4 +1,4 @@
-import cv2, random, exercises
+import cv2, random
 import mediapipe as mp
 import numpy as np
 from skeleton import skeleton
@@ -39,17 +39,33 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             rangle = skelly.calcuate_relbow()
                 
             # Visualize angle
-            cv2.putText(image, str(langle), tuple(np.multiply(skelly.lelbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.relbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(image, str(langle), tuple(np.multiply(skelly.l_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.r_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
-            if exchoice == 0:         
-                exercises.bar(langle, rangle)
+            if exchoice == 0:      
+                if langle > 160 and rangle > 160 :
+                    stage = "down"
+                if langle < 30 and stage =='down' and rangle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1           
             elif exchoice == 1:                
-                exercises.curl(langle)
+                if langle > 160:
+                    stage = "down"
+                if langle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1
             elif exchoice == 2:
-                exercises.curl(rangle)
+                if rangle > 160:
+                    stage = "down"
+                if rangle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1
             elif exchoice == 3:
-                exercises.benchPress(langle, rangle)
+                if langle > 165 and rangle > 165 :
+                    stage = "up"
+                if langle < 65 and stage =='up' and rangle < 65 and stage =='up':
+                    stage="down"
+                    counter +=1
 
         except:
             pass
