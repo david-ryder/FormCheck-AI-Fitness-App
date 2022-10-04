@@ -76,6 +76,13 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 if (lknee_angle <= 90 or rknee_angle<=90) and stage =='up':
                     stage="down"
                     counter +=1
+            if exchoice == 5:
+                if langle > 120 and rangle > 120 :
+                    stage = "down"
+                if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]):
+                    print(skelly.l_elbow[1], skelly.l_shoulder)
+                    stage="up"
+                    counter +=1
 
         except:
             pass
