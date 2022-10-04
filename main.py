@@ -34,7 +34,6 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         try:
             skelly = skeleton(mp_pose, results.pose_landmarks.landmark)
-            print('test')
             # Calculate angle
             langle = skelly.calcuate_lelbow()
             rangle = skelly.calcuate_relbow()
