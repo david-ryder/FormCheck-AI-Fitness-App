@@ -7,7 +7,7 @@ from skeleton import skeleton
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-print("0: Bar\n1: Curl left\n2: Curl right\n3: Bench\n4: Squat")
+print("0: Bar\n1: Curl left\n2: Curl right\n3: Bench\n4: Squat\n5: Pull-Up")
 exchoice = int(input()) #front end problem :/
 
 cap = cv2.VideoCapture(0)
@@ -78,8 +78,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if exchoice == 5:
                 if langle > 120 and rangle > 120 :
                     stage = "down"
-                if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]):
-                    print(skelly.l_elbow[1], skelly.l_shoulder)
+                if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]):
                     stage="up"
                     counter +=1
 
