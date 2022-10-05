@@ -1,4 +1,4 @@
-import cv2, random, exercises
+import cv2, random
 import mediapipe as mp
 import numpy as np
 from skeleton import skeleton
@@ -6,7 +6,7 @@ from skeleton import skeleton
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
-print("0: Bar\n1: Curl left\n2: Curl right\n3: Bench")
+print("0: Bar\n1: Curl left\n2: Curl right\n3: Bench\n4: Squat\n5: Pull-Up")
 exchoice = int(input()) #front end problem :/
 
 cap = cv2.VideoCapture(0)
@@ -37,19 +37,50 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             # Calculate angle
             langle = skelly.calcuate_lelbow()
             rangle = skelly.calcuate_relbow()
-                
+            
+            lknee_angle= skelly.calculate_lknee()
+            rknee_angle= skelly.calculate_rknee()
+            
             # Visualize angle
-            cv2.putText(image, str(langle), tuple(np.multiply(skelly.lelbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.relbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(image, str(langle), tuple(np.multiply(skelly.l_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.r_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
 
-            if exchoice == 0:         
-                exercises.bar(langle, rangle)
+            if exchoice == 0:      
+                if langle > 160 and rangle > 160 :
+                    stage = "down"
+                if langle < 30 and stage =='down' and rangle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1           
             elif exchoice == 1:                
-                exercises.curl(langle)
+                if langle > 160:
+                    stage = "down"
+                if langle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1
             elif exchoice == 2:
-                exercises.curl(rangle)
+                if rangle > 160:
+                    stage = "down"
+                if rangle < 30 and stage =='down':
+                    stage="up"
+                    counter +=1
             elif exchoice == 3:
-                exercises.benchPress(langle, rangle)
+                if langle > 165 and rangle > 165 :
+                    stage = "up"
+                if langle < 65 and stage =='up' and rangle < 65 and stage =='up':
+                    stage="down"
+                    counter +=1
+            elif exchoice ==4:
+                if lknee_angle > 169 or rknee_angle>169:
+                    stage = "up"
+                if (lknee_angle <= 90 or rknee_angle<=90) and stage =='up':
+                    stage="down"
+                    counter +=1
+            if exchoice == 5:
+                if langle > 120 and rangle > 120 :
+                    stage = "down"
+                if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]):
+                    stage="up"
+                    counter +=1
 
             # Setup bench press fail checking
             if exchoice == 'bench_press':

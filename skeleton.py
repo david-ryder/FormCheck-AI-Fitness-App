@@ -29,7 +29,11 @@ class skeleton:
     def calcuate_rshoulder(self):
         pass
 
-skeleton
+    def calculate_lknee(self):
+        return calculate_angle(self.l_hip, self.l_knee, self.l_ankle)
+
+    def calculate_rknee(self):
+        return calculate_angle(self.r_hip, self.r_knee, self.r_ankle)
 
 def calculate_angle(a,b,c):
     a = np.array(a) # First
