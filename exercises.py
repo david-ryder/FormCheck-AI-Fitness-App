@@ -25,7 +25,6 @@ def benchPress(langle, rangle):
 hand_spacing = True
 shoulders = True
 
-    
 # Bench press fail conditions
 def benchPressCheck(skelly):
     global hand_spacing
