@@ -5,7 +5,7 @@ def bar(langle, rangle):
         stage = "down"
     if langle < 30 and stage =='down' and rangle < 30 and stage =='down':
         stage="up"
-        counter +=1           
+        counter +=1
 
 def curl(angle):
     if angle > 160:
