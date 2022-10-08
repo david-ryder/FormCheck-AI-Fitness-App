@@ -1,4 +1,3 @@
-from glob import glob
 from skeleton import skeleton
 
 # Margin of error constant
@@ -21,7 +20,7 @@ def bar(langle, rangle):
         stage = "down"
     if langle < 30 and stage =='down' and rangle < 30 and stage =='down':
         stage="up"
-        counter +=1
+        counter += 1
 
 def curl(angle):
     if angle > 160:
@@ -149,6 +148,6 @@ def deadliftCheck(skelly, stage):
 
     # down - hands outside of knees?
 
-    # down - chest below knees?
+    # down - chest above knees?
 
     # up - standing all the way up?
