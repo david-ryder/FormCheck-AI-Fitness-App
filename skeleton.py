@@ -17,7 +17,6 @@ class skeleton:
         self.l_ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].y]
         self.r_ankle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x, landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE].y]
 
-
     def calcuate_lelbow(self):
         return calculate_angle(self.l_shoulder, self.l_elbow, self.l_wrist)
 

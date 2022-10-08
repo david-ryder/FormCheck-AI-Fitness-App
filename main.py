@@ -3,7 +3,6 @@ import mediapipe as mp
 import numpy as np
 from skeleton import skeleton
 
-
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 
@@ -34,6 +33,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         try:
             skelly = skeleton(mp_pose, results.pose_landmarks.landmark)
+            
             # Calculate angle
             langle = skelly.calcuate_lelbow()
             rangle = skelly.calcuate_relbow()
@@ -81,6 +81,10 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]):
                     stage="up"
                     counter +=1
+
+            # Setup bench press fail checking
+            if exchoice == 'bench_press':
+                exercises.benchPressCheck(skelly)
 
         except:
             pass
