@@ -3,18 +3,6 @@ from skeleton import skeleton
 # Margin of error constant
 MOE = 0.1
 
-# Fail flags
-hand_spacing = True
-shoulders = True
-arms_straight = True
-elbows_apart = True
-
-# Angles of arms
-elbow_left_up = 0
-elbow_left_down = 1000000
-elbow_right_up = 0
-elbow_right_down = 1000000
-
 def bar(langle, rangle):
     if langle > 160 and rangle > 160 :
         stage = "down"
@@ -43,12 +31,29 @@ def getPercentDifference(a, b):
     percent_difference = abs_difference / average
     return percent_difference
 
+# Fail flags - Bench Press
+hand_spacing = True
+shoulders = True
+arms_straight = True
+elbows_apart = True
+
+# Continuous variables
+elbow_left_up = 0
+elbow_left_down = 1000000
+elbow_right_up = 0
+elbow_right_down = 1000000
+
 # Bench press fail conditions
 def benchPressCheck(skelly, stage):
     global hand_spacing
     global shoulders
     global arms_straight
     global elbows_apart
+
+    global elbow_left_up
+    global elbow_left_down
+    global elbow_right_up
+    global elbow_right_down
 
     # Hands evenly spaced?
     center = (skelly.l_shoulder[0] + skelly.r_shoulder[0]) / 2 # get center of shoulders
@@ -110,12 +115,24 @@ def benchPressCheck(skelly, stage):
         elbow_left_up = 0
         elbow_right_up = 0
 
+# Fail flags - Deadlifts
 feet = True
+straightLegs = True
+handPlacement = True
+bendingBack = True
+
+# Continuous variables
 l_leg = 0
 r_leg = 0
 
 def deadliftCheck(skelly, stage):
-    global feets
+    global feet
+    global straightLegs
+    global handPlacement
+    global bendingBack
+
+    global l_leg
+    global r_leg
 
     # feet shoulder width apart? allow margin of error outside of body
     l_ankle = skelly.l_ankle[0]
@@ -123,9 +140,6 @@ def deadliftCheck(skelly, stage):
 
     l_shoulder = skelly.l_shoulder[0]
     r_shoulder = skelly.r_shoulder[0]
-
-    l_offset = getPercentDifference(l_ankle, l_shoulder)
-    r_offset = getPercentDifference(r_ankle, r_shoulder)
 
     if (not (l_ankle <= l_shoulder and l_ankle >= l_shoulder * (1 - MOE))): # left check
         feet = False
@@ -138,16 +152,37 @@ def deadliftCheck(skelly, stage):
     if (stage == 'up'):
         # update up position
         l_leg = max(l_leg, skelly.calculate_lknee())
-        r_leg = max(r_leg, skelly.calculate_lknee())
+        r_leg = max(r_leg, skelly.calculate_rknee())
 
         # failcheck for down
+        l_knee = skelly.l_knee[0]
+        r_knee = skelly.r_knee[0]
+        l_wrist = skelly.l_wrist[0]
+        r_wrist = skelly.r_wrist[0]
+
+        # hands outside of knees? between 5 and 15% outside
+        if (not (l_wrist <= l_knee * 0.95 and l_wrist >= l_knee * 0.85)): # left check
+            handPlacement = False
+            print('hands not between 5 and 15 percent outside of knee, left')
+        if (not (r_wrist <= r_knee * 0.95 and r_wrist >= r_knee * 0.85)): # right check
+            handPlacement = False
+            print('hands not between 5 and 15 percent outside of knee, right')
+
     if (stage == 'down'):
-        # update down position
-
         # failcheck for up
+        if (not((l_leg >= 170) and (l_leg <= 180))):
+            straightLegs = False
+            print('not fully extending on up, left')
+        if (not((r_leg >= 170) and (r_leg <= 180))):
+            straightLegs = False
+            print('not fully extending on up, left')
+        l_leg = 0
+        r_leg = 0
 
-    # down - hands outside of knees?
-
-    # down - chest above knees?
-
-    # up - standing all the way up?
+        # failcheck for knee - shoulder depth
+        if (not(skelly.l_knee[2] <= skelly.l_shoulder[2] * (1 + MOE) and skelly.l_knee[2] >= skelly.l_shoulder[2] * (1 - MOE))):
+            bendingBack = False
+            print('back bending, left')
+        if (not(skelly.r_knee[2] <= skelly.r_shoulder[2] * (1 + MOE) and skelly.r_knee[2] >= skelly.r_shoulder[2] * (1 - MOE))):
+            bendingBack = False
+            print('back bending, right')
