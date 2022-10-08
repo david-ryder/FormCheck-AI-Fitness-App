@@ -29,8 +29,6 @@ MOE = 0.1
 hand_spacing = True
 shoulders = True
 
-<<<<<<< Updated upstream
-=======
 # Calculates the percent difference between two points
 def getPercentDifference(a, b):
     abs_difference = abs(a - b) # absolute value of difference
@@ -38,7 +36,6 @@ def getPercentDifference(a, b):
     percent_difference = abs_difference / average
     return percent_difference
 
->>>>>>> Stashed changes
 # Bench press fail conditions
 def benchPressCheck(skelly):
     global hand_spacing
