@@ -1,3 +1,4 @@
+from glob import glob
 from skeleton import skeleton
 
 # Margin of error constant
@@ -109,3 +110,45 @@ def benchPressCheck(skelly, stage):
             print('not fully extending on up, left')
         elbow_left_up = 0
         elbow_right_up = 0
+
+feet = True
+l_leg = 0
+r_leg = 0
+
+def deadliftCheck(skelly, stage):
+    global feets
+
+    # feet shoulder width apart? allow margin of error outside of body
+    l_ankle = skelly.l_ankle[0]
+    r_ankle = skelly.r_ankle[0]
+
+    l_shoulder = skelly.l_shoulder[0]
+    r_shoulder = skelly.r_shoulder[0]
+
+    l_offset = getPercentDifference(l_ankle, l_shoulder)
+    r_offset = getPercentDifference(r_ankle, r_shoulder)
+
+    if (not (l_ankle <= l_shoulder and l_ankle >= l_shoulder * (1 - MOE))): # left check
+        feet = False
+        print('feet not about shoulder width apart')
+
+    if (not (r_ankle >= r_shoulder and r_ankle <= r_shoulder * (1 + MOE))): # right check
+        feet = False
+        print('feet not about shoulder width apart')
+
+    if (stage == 'up'):
+        # update up position
+        l_leg = max(l_leg, skelly.calculate_lknee())
+        r_leg = max(r_leg, skelly.calculate_lknee())
+
+        # failcheck for down
+    if (stage == 'down'):
+        # update down position
+
+        # failcheck for up
+
+    # down - hands outside of knees?
+
+    # down - chest below knees?
+
+    # up - standing all the way up?
