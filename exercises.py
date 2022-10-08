@@ -1,5 +1,19 @@
-from tkinter.filedialog import LoadFileDialog
 from skeleton import skeleton
+
+# Margin of error constant
+MOE = 0.1
+
+# Fail flags
+hand_spacing = True
+shoulders = True
+arms_straight = True
+elbows_apart = True
+
+# Angles of arms
+elbow_left_up = 0
+elbow_left_down = 1000000
+elbow_right_up = 0
+elbow_right_down = 1000000
 
 def bar(langle, rangle):
     if langle > 160 and rangle > 160 :
@@ -22,13 +36,6 @@ def benchPress(langle, rangle):
         stage="down"
         counter +=1
 
-# Margin of error variable
-MOE = 0.1
-
-# Flags
-hand_spacing = True
-shoulders = True
-
 # Calculates the percent difference between two points
 def getPercentDifference(a, b):
     abs_difference = abs(a - b) # absolute value of difference
@@ -37,11 +44,11 @@ def getPercentDifference(a, b):
     return percent_difference
 
 # Bench press fail conditions
-def benchPressCheck(skelly):
+def benchPressCheck(skelly, stage):
     global hand_spacing
     global shoulders
-
-    # Head, shoulders, and glutes touching bench?
+    global arms_straight
+    global elbows_apart
 
     # Hands evenly spaced?
     center = (skelly.l_shoulder[0] + skelly.r_shoulder[0]) / 2 # get center of shoulders
@@ -56,18 +63,49 @@ def benchPressCheck(skelly):
         print('hand spacing uneven')
 
     # Hands slightly more outside of shoulders?
-    l_distance = skelly.l_shoulder[0] - skelly.l_wrist[0]
-    r_distance = skelly.r_wrist[0] - skelly.r_shoulder[0]
+    l_wrist = skelly.l_wrist[0]
+    l_shoulder = skelly.l_shoulder[0]
 
-    # hands should be about 5-15% outside of shoulders
-    
+    if (not (l_wrist <= l_shoulder * 0.95 and l_wrist >= l_shoulder * 0.85)): # left check
+        shoulders = False
+        print('hands are not between 5-15 percent outside of shoulders, left')
 
-    # Weight stays above chest?
+    r_wrist = skelly.r_wrist[0]
+    r_shoulder = skelly.r_shoulder[0]
 
-    # Elbow angle close to 180 degrees at top?
+    if (not (r_wrist >= r_shoulder * 1.05 and r_wrist <= r_shoulder * 1.15)): # right check
+        shoulders = False
+        print('hands are not between 5-15 percent outside of shoulders, right')
 
-    # Elbow angle between 45 and 75 degrees at bottom?
+    # Elbow angle close to 180 degrees at top? Shoulder angle between 45 and 75 degrees at bottom?
+    # update the up angle when stage is up, but do failcheck for down
+    if (stage == 'up'):
+        # update up
+        elbow_left_up = max(elbow_left_up, skelly.calcuate_lelbow())
+        elbow_right_up = max(elbow_right_up, skelly.calcuate_relbow())
 
-    # Feet flat on ground?
+        # failcheck for down - reset down angle
+        if (not((elbow_left_down >= 45) and (elbow_left_down <= 75))):
+            arms_straight = False
+            print('elbows are not between 45 and 75 degrees when weight is down, left')
+        if (not((elbow_right_down >= 45) and (elbow_right_down <= 75))):
+            arms_straight = False
+            print('elbows are not between 45 and 75 degrees when weight is down, right')
+        elbow_left_down = 0
+        elbow_right_down = 0
 
-    
+    # update the down angle when stage is down, but do failcheck for up
+    if (stage == 'down'):
+        # update down
+        elbow_left_down = min(elbow_left_down, skelly.calculate_lshoulder())
+        elbow_right_down = min(elbow_right_down, skelly.calculate_rshoulder())
+
+        # failcheck for up - reset up angle
+        if (not((elbow_left_up >= 170) and (elbow_left_up <= 180))):
+            arms_straight = False
+            print('not fully extending on up, left')
+        if (not((elbow_right_down >= 170) and (elbow_right_down <= 180))):
+            arms_straight = False
+            print('not fully extending on up, left')
+        elbow_left_up = 0
+        elbow_right_up = 0
