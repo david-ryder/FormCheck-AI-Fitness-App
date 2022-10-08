@@ -1,3 +1,4 @@
+from tkinter.filedialog import LoadFileDialog
 from skeleton import skeleton
 
 def bar(langle, rangle):
@@ -21,10 +22,23 @@ def benchPress(langle, rangle):
         stage="down"
         counter +=1
 
+# Margin of error variable
+MOE = 0.1
+
 # Flags
 hand_spacing = True
 shoulders = True
 
+<<<<<<< Updated upstream
+=======
+# Calculates the percent difference between two points
+def getPercentDifference(a, b):
+    abs_difference = abs(a - b) # absolute value of difference
+    average = (a + b) / 2 # average of 2 offsets
+    percent_difference = abs_difference / average
+    return percent_difference
+
+>>>>>>> Stashed changes
 # Bench press fail conditions
 def benchPressCheck(skelly):
     global hand_spacing
@@ -33,26 +47,23 @@ def benchPressCheck(skelly):
     # Head, shoulders, and glutes touching bench?
 
     # Hands evenly spaced?
-    
-    # get absolute value of the difference between shoulder and wrist X coordinates
-    l_difference = abs(skelly.l_wrist[0] - skelly.l_shoulder[0])
-    r_difference = abs(skelly.r_wrist[0] - skelly.r_shoulder[0])
+    center = (skelly.l_shoulder[0] + skelly.r_shoulder[0]) / 2 # get center of shoulders
 
-    # the difference between these two coordinates should be close to 0 (5% margin of error)
-    if (abs(l_difference - r_difference) >= 0.05):
-        print('hand spacing fail')
+    l_offset = abs(center - skelly.l_wrist[0])
+    r_offset = abs(center - skelly.r_wrist[0])
+
+    percent_difference = getPercentDifference(l_offset, r_offset)
+
+    if (percent_difference <= MOE): # fail condition
         hand_spacing = False
+        print('hand spacing uneven')
 
     # Hands slightly more outside of shoulders?
-    # wrists should be 5-15% outside of shoulders
-    # left check
-    if (l_difference <= skelly.l_shoulder[0] * 0.15 or l_difference >= skelly.l_shoulder[0] * 0.05):
-        print('shoulder/hand fail')
-        shoulders = False
-    # right check
-    if (r_difference <= skelly.r_shoulder[0] * 0.15 or r_difference >= skelly.r_shoulder[0] * 0.05):
-        print('shoulder/hand fail')
-        shoulders = False
+    l_distance = skelly.l_shoulder[0] - skelly.l_wrist[0]
+    r_distance = skelly.r_wrist[0] - skelly.r_shoulder[0]
+
+    # hands should be about 5-15% outside of shoulders
+    
 
     # Weight stays above chest?
 
