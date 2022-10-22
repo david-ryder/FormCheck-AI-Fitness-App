@@ -2,6 +2,7 @@ import cv2, random
 import mediapipe as mp
 import numpy as np
 from skeleton import skeleton
+import exercises as ex
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -14,7 +15,6 @@ cap = cv2.VideoCapture(0)
 # Curl counter variables
 counter = 0 
 stage = None
-
 ## Setup mediapipe instance
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
@@ -33,7 +33,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         try:
             skelly = skeleton(mp_pose, results.pose_landmarks.landmark)
-            
+
             # Calculate angle
             langle = skelly.calcuate_lelbow()
             rangle = skelly.calcuate_relbow()
@@ -44,19 +44,21 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             # Visualize angle
             cv2.putText(image, str(langle), tuple(np.multiply(skelly.l_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
             cv2.putText(image, str(rangle), tuple(np.multiply(skelly.r_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            
 
             if exchoice == 0:    
                 if langle > 160 and rangle > 160 :
                     stage = "down"
                 if langle < 30 and stage =='down' and rangle < 30 and stage =='down':
                     stage = "up"
-                    counter += 1           
-            elif exchoice == 1:                
+                    counter += 1 
+                
+            elif exchoice == 1:  
                 if langle > 160:
                     stage = "down"
                 if langle < 30 and stage =='down':
                     stage = "up"
-                    counter += 1
+
             elif exchoice == 2:
                 if rangle > 160:
                     stage = "down"
@@ -69,6 +71,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 if langle < 65 and stage =='up' and rangle < 65 and stage =='up':
                     stage = "down"
                     counter += 1
+                ex.benchPressCheck(skelly, stage)
             elif exchoice == 4:
                 if lknee_angle > 169 or rknee_angle > 169:
                     stage = "up"
@@ -82,8 +85,8 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                     stage = "up"
                     counter += 1
 
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         # Render curl counter
         # Setup status box

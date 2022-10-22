@@ -3,6 +3,7 @@ from skeleton import skeleton
 # Margin of error constant
 MOE = 0.1
 
+
 def bar(langle, rangle):
     if langle > 160 and rangle > 160 :
         stage = "down"
@@ -96,8 +97,10 @@ def benchPressCheck(skelly, stage):
         if (not((elbow_right_down >= 45) and (elbow_right_down <= 75))):
             arms_straight = False
             print('elbows are not between 45 and 75 degrees when weight is down, right')
+            print('correct')
         elbow_left_down = 0
         elbow_right_down = 0
+
 
     # update the down angle when stage is down, but do failcheck for up
     if (stage == 'down'):
