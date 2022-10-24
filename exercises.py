@@ -97,7 +97,6 @@ def benchPressCheck(skelly, stage):
         if (not((elbow_right_down >= 45) and (elbow_right_down <= 75))):
             arms_straight = False
             print('elbows are not between 45 and 75 degrees when weight is down, right')
-            print('correct')
         elbow_left_down = 0
         elbow_right_down = 0
 
@@ -189,3 +188,25 @@ def deadliftCheck(skelly, stage):
         if (not(skelly.r_knee[2] <= skelly.r_shoulder[2] * (1 + MOE) and skelly.r_knee[2] >= skelly.r_shoulder[2] * (1 - MOE))):
             bendingBack = False
             print('back bending, right')
+
+ddown=0
+pole=0
+def pullupcheck(skelly, stage):
+    global ddown
+    global pole
+    langle = skelly.calcuate_lelbow()
+    rangle = skelly.calcuate_relbow()
+    if stage=='up':
+        if (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]) and langle>50 and rangle>50:
+            print("hands too wide", langle, rangle)
+        if (skelly.l_wrist[1]>skelly.mouth[1]):
+            pole=0
+        else:
+            pole+=1
+    if stage=='down':
+        if langle<150 or rangle<150:
+            ddown+=1
+    
+    
+    
+    

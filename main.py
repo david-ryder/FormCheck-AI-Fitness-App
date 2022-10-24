@@ -33,7 +33,7 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         
         try:
             skelly = skeleton(mp_pose, results.pose_landmarks.landmark)
-
+            
             # Calculate angle
             langle = skelly.calcuate_lelbow()
             rangle = skelly.calcuate_relbow()
@@ -41,9 +41,11 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             lknee_angle= skelly.calculate_lknee()
             rknee_angle= skelly.calculate_rknee()
             
+            
+            
             # Visualize angle
-            cv2.putText(image, str(langle), tuple(np.multiply(skelly.l_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.r_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            '''cv2.putText(image, str(langle), tuple(np.multiply(skelly.l_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(image, str(rangle), tuple(np.multiply(skelly.r_elbow, [640, 480]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)'''
             
 
             if exchoice == 0:    
@@ -71,7 +73,6 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 if langle < 65 and stage =='up' and rangle < 65 and stage =='up':
                     stage = "down"
                     counter += 1
-                ex.benchPressCheck(skelly, stage)
             elif exchoice == 4:
                 if lknee_angle > 169 or rknee_angle > 169:
                     stage = "up"
@@ -81,12 +82,21 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             if exchoice == 5:
                 if langle > 120 and rangle > 120 :
                     stage = "down"
+                    ex.pullupcheck(skelly, stage)
                 if langle < 70 and stage =='down' and rangle < 70 and stage =='down' and (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]):
                     stage = "up"
                     counter += 1
-
+                    
+                    if ex.ddown>=7:
+                        print('please go all the way down before pulling back up')
+                        ex.ddown=0
+                    else:
+                        ex.ddown=0
+                    ex.pullupcheck(skelly, stage)
+                
+                
         except Exception as e:
-            print(e)
+            print(e) 
 
         # Render curl counter
         # Setup status box
