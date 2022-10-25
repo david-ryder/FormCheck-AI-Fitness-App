@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width-device-width, initial-scale-1" />
+    <title>RepBuddy</title>
+    <style>
+      .logo-bar {
+        background-color: #60c63d;
+        overflow: hidden;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 50px;
+        z-index: 101;
+      }
+      .logo-bar .profile {
+        position: relative;
+        color: white;
+        float: right;
+        margin: 9px;
+        margin-right: 15px;
+      }
+      .logo-bar .profile-button {
+        height: 32px;
+        border-radius: 50%;
+      }
+      .logo-bar .profile-button:hover {
+        box-shadow: 0 0.5em 0.5em -0.4em #000;
+        transform: translateY(-0.25em);
+      }
+      .logo-bar .logo img {
+        height: 50px;
+        margin-left: 10px;
+      }
+
+      #videoElement {
+        position: absolute;
+        top: 50px;
+        right: 30%;
+        width: 70%;
+        height: 95%;
+        z-index: 100;
+        background-color: grey;
+        -moz-transform: scale(-1, 1);
+        -webkit-transform: scale(-1, 1);
+        -o-transform: scale(-1, 1);
+        -ms-transform: scale(-1, 1);
+        transform: scale(-1, 1);
+      }
+
+      .dropbtn {
+        position: absolute;
+        top: 10%;
+        left: 75%;
+        width: 300px;
+        height: 60px;
+        border-radius: 25px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: xx-large;
+        text-align: center;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 17.8%;
+        left: 75%;
+        background-color: #f1f1f1;
+        min-width: 300px;
+        box-shadow: 0px 8px 16px 0px #000;
+        border-radius: 25px;
+        z-index: 100;
+      }
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: larger;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-content a:hover {
+        background-color: #60c63d;
+        border-radius: 25px;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .dropdown:hover .dropbtn {
+        background-color: #60c63d;
+      }
+
+      #live-suggestions h2 {
+        position: absolute;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: large;
+        left: 81%;
+        top: 18%;
+      }
+      #live-suggestions .textbox {
+        position: absolute;
+        top: 25%;
+        left: 75%;
+        height: 400px;
+        width: 300px;
+        border-radius: 25px;
+        box-shadow: 0px 8px 16px 0px #000;
+        background-color: rgba(226, 226, 226, 0.689);
+      }
+
+      .repcounter h3 {
+        position: absolute;
+        font-size: 52px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        top: 72%;
+        left: 76.5%;
+      }
+      .repcounter p {
+        position: absolute;
+        font-size: 52px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        top: 72.5%;
+        left: 92%;
+        color: #60c63d;
+      }
+
+      .exitbutton a {
+        position: absolute;
+        z-index: 100;
+        width: 300px;
+        height: 40px;
+        border-radius: 50px;
+        color: white;
+        background-color: black;
+        top: 90%;
+        left: 75%;
+        text-align: center;
+        font-size: 30px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        text-decoration: none;
+      }
+      .exitbutton a:hover {
+        box-shadow: inset 10em 0 0 0 red;
+        transition: 0.75s;
+      }
+
+      .bottombar {
+        background-color: #60c63d;
+        position: absolute;
+        top: 96.8%;
+        left: 70%;
+        width: 30%;
+        height: 35px;
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo-bar">
+      <a class="logo" href="">
+        <img src="images/logo.png" alt="RepBuddy logo" />
+      </a>
+      <a class="profile" href="">
+        <img
+          class="profile-button"
+          src="images/user-image.jpg"
+          alt="generic user image"
+        />
+      </a>
+    </div>
+    <div class="repcounter">
+      <h3># of Reps:</h3>
+      <p>0</p>
+    </div>
+    <div id="video">
+      <video autoplay="true" id="videoElement"></video>
+    </div>
+    <script>
+      var video = document.querySelector("#videoElement");
+
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function (stream) {
+            video.srcObject = stream;
+          })
+          .catch(function (err0r) {
+            console.log("Something went wrong!");
+          });
+      }
+    </script>
+    <div id="side-menu">
+      <div class="dropdown">
+        <button class="dropbtn">Bicep Curls</button>
+        <div class="dropdown-content">
+          <a href="curlslivefeed.html">Bicep Curls</a>
+          <a href="#">Bench Press</a>
+          <a href="#">Overhead Press</a>
+          <a href="#">Pull Ups</a>
+          <a href="#">Deadlift</a>
+          <a href="#">Squats</a>
+        </div>
+      </div>
+    </div>
+    <div id="live-suggestions">
+      <h2>Live Suggestions:</h2>
+      <div class="textbox"></div>
+    </div>
+    <div class="exitbutton">
+      <a href="index.html">End Workout</a>
+    </div>
+    <div class="bottombar"></div>
+  </body>
+</html>
