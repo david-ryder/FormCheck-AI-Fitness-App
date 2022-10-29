@@ -97,6 +97,7 @@ def benchPressCheck(skelly, stage):
         if (not((elbow_right_down >= 45) and (elbow_right_down <= 75))):
             arms_straight = False
             print('elbows are not between 45 and 75 degrees when weight is down, right')
+            print('correct')
         elbow_left_down = 0
         elbow_right_down = 0
 
@@ -208,5 +209,91 @@ def pullupcheck(skelly, stage):
             ddown+=1
     
     
+#Fail Flags
+kneeAngles = True
+feet = True
+toes = True
+heels = True
+kneesAlign = True
+
+
+
+def squatCheck(skelly,stage):
+    
+    global kneeAngles
+    global feet
+    global toes
+    global heels
+    global kneesAlign
+
+    lknee_angle= skelly.calculate_lknee()
+    rknee_angle= skelly.calculate_rknee()
+    #-------------------------------------------------------
+
+    # Check if knees are slightly lower than 90 degrees
+    if(lknee_angle <= 75 or rknee_angle <= 75):
+        kneeAngles = False
+        print("Squatted to low, keep knees at approximately 90 degrees")
+    
+    l_shoulder = skelly.l_shoulder[0]
+    r_shoulder = skelly.r_shoulder[0]
+    #-------------------------------------------------------
+
+    # feet shoulder width apart? allow margin of error outside of body
+    l_ankle = skelly.l_ankle[0]
+    r_ankle = skelly.r_ankle[0]
+
+    if (not (l_ankle <= l_shoulder and l_ankle >= l_shoulder * (1 - MOE))): # left check
+        feet = False
+        print('feet not about shoulder width apart\n')
+
+    if (not (r_ankle >= r_shoulder and r_ankle <= r_shoulder * (1 + MOE))): # right check
+        feet = False
+        print('feet not about shoulder width apart\n')
+    #---------------------------------------------------------------
+
+    #check if knees have passed over the toes (not over-relying on back)
+    l_knee = skelly.l_knee[2]
+    r_knee = skelly.r_knee[2]
+
+    l_toe = skelly.l_foot[2]
+    r_toe = skelly.r_foot[2]
+
+    if(stage == 'down'):
+        if((l_knee+(l_knee * MOE)) > l_toe or (r_knee+(r_knee*MOE)) > r_toe):  #10% margin of error
+            toes = False
+            print("Leaning too far forward\n")
+
+        if((l_knee +(l_knee*MOE) > r_toe or r_knee+(r_knee*MOE)> l_toe)): 
+            toes = False
+            print("Leaning too far forward")
+    #--------------------------------------------------------------
+
+    #check if heels are off the ground
+    # this has to be checked continously
+    l_heel = skelly.l_heel[1]
+    r_heel = skelly.r_heel[2]
+
+    if(l_heel > .1 or r_heel > 0.1):
+        heels = False
+    #--------------------------------------------------------------
+
+    #check if knees pointing in same direction as feet
+    #should be checked continuously
+
+    l_knee_x = skelly.l_knee[0]
+    r_knee_x = skelly.r_knee[0] 
+
+    l_toe_x = skelly.l_foot[0]
+    r_toe_x = skelly.r_foot[0]
+
+    if(l_knee_x < (l_toe_x*(1-MOE)) or l_knee_x > (l_toe_x*(1+MOE))):
+        kneesAlign = False
+        print("Knees not pointed in same direction as feet")
+    
+    if(r_knee_x < (r_toe_x*(1-MOE)) or r_knee_x > (r_toe_x*(1+MOE))):
+        kneesAlign = False
+        print("Knees not pointed in same direction as feet")
+
     
     
