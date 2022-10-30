@@ -101,7 +101,6 @@ def benchPressCheck(skelly, stage):
         elbow_left_down = 0
         elbow_right_down = 0
 
-
     # update the down angle when stage is down, but do failcheck for up
     if (stage == 'down'):
         # update down
@@ -201,12 +200,12 @@ def pullupcheck(skelly, stage):
         if (skelly.l_elbow[1] > skelly.l_shoulder[1]) and (skelly.r_elbow[1] > skelly.r_shoulder[1]) and langle>50 and rangle>50:
             print("hands too wide", langle, rangle)
         if (skelly.l_wrist[1]>skelly.mouth[1]):
-            pole=0
+            pole = 0
         else:
-            pole+=1
+            pole += 1
     if stage=='down':
-        if langle<150 or rangle<150:
-            ddown+=1
+        if langle < 150 or rangle < 150:
+            ddown += 1
     
     
 #Fail Flags
