@@ -217,7 +217,7 @@ kneesAlign = True
 
 
 
-def squatCheck(skelly,stage):
+def squatCheck(skelly,stage): #untested
     
     global kneeAngles
     global feet
