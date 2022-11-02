@@ -3,13 +3,10 @@ userid
 email
 password
 
-# Workout table
+# Exercise table
 userid
 date
-exercise [list]
-
-# Exercise table
 weight
 sets
 reps
-percent success
+percent_success

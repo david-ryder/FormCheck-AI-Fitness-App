@@ -10,8 +10,4 @@ class Exercise(models.Model):
     weight = models.IntegerField()
     sets = models.IntegerField()
     reps = models.IntegerField()
-    count = models.IntegerField()
     percent_success = models.FloatField()
-
-    def updateCount(self):
-        self.count = self.sets * self.reps
