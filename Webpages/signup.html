@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width-device-width, initial-scale-1" />
+    <title>RepBuddy</title>
+    <style>
+        .logo-bar {
+            background-color: #60c63d;
+            overflow: hidden;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50px;
+            z-index: 101;
+        }
+
+        .logo-bar .logo img {
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        .signup-page .signup-block {
+            position: absolute;
+            top: 20%;
+            left: 34%;
+            height: 500px;
+            width: 400px;
+            z-index: 100;
+            background-color: rgb(245, 245, 245);
+            border-radius: 20px;
+            box-shadow: 0px 0px 8px 0px #000;
+        }
+
+        .signup-block .signup {
+            position: absolute;
+            margin-top: 20px;
+            left: 34.5%;
+            z-index: 100;
+            font-size: 48px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #60c63d;
+        }
+
+        form {
+            position: absolute;
+            top: 17%;
+        }
+
+        label {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 15px;
+            ;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: large;
+            font-kerning: normal;
+        }
+
+        button {
+            position: absolute;
+            background-color: #ffffff;
+            color: #60c63d;
+            font-size: 24px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 80%;
+            border-radius: 25px;
+            transition: all .5s ease;
+            top: 100%;
+            left: 10%;
+            border: 1px solid #60c63d;
+        }
+
+        button:hover {
+            color: white;
+            background-color: #60c63d;
+        }
+
+        .createbtn {
+            position: absolute;
+            width: 80%;
+            padding: 10px 18px;
+            font-size: 24px;
+            background-color: white;
+            top: 150%;
+            left: 10%
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+
+            .cancelbtn {
+                width: 100%;
+            }
+        }
+
+        .signup-block img {
+            position: absolute;
+            width: 70%;
+            height: auto;
+            top: 140%;
+            left: 14%;
+        }
+
+        .bottombar {
+            background-color: #60c63d;
+            overflow: hidden;
+            position: absolute;
+            top: 96%;
+            left: 0px;
+            width: 100%;
+            height: 35px;
+            z-index: 101;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo-bar">
+        <a class="logo" href="">
+            <img src="images/logo.png" alt="RepBuddy logo" />
+        </a>
+    </div>
+    <div class="signup-page">
+        <div class="signup-block">
+            <h2 class="signup">Sign Up</h2>
+            <form action="action_page.php" method="post">
+                <div class="container">
+                    <input type="text" placeholder="Enter Email" name="email" required>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="password" placeholder="Enter Same Password" name="re-psw" required>
+                    <button type="submit" href="profile.html">Sign Up!</button>
+            </form>
+            <img src="images/logo.png" alt="RepBuddy logo" />
+        </div>
+    </div>
+    <div class="bottombar"></div>
+</body>
+
+</html>
